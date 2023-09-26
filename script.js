@@ -1,80 +1,96 @@
+const piedraBtn = document.querySelector('.piedra');
+const papelBtn = document.querySelector('.papel');
+const tijeraBtn = document.querySelector('.tijera');
+const resultado = document.querySelector('.resultado');
+userScore = 0;
+computerScore = 0;
+
 function getComputerChoice (){
     let num = Math.floor(Math.random() * 3);
     switch (num){
         case 0:
             return 'PIEDRA';
+            break;
         case 1:
-            return 'PAPEl';
+            return 'PAPEL';
+            break;
         case 2:
             return 'TIJERA';
+            break;
     }
 }
 
-function userChoice (){
-    let choice = prompt("Elija Piedra, papel ó tijera").toUpperCase();
-    return choice;
+const checkWinner = (userScore, computerScore) => {
+    if (userScore == 3) {
+        const h2 = document.createElement('h2');
+        h2.classList.add('ganaUsuario');
+        h2.innerText = 'ganaste '+userScore+ 'a' +computerScore;
+        resultado.appendChild(h2);
+    }
+    if (computerScore == 3) {
+        const h2 = document.createElement('h2');
+        h2.classList.add('ganaComputadora');
+        h2.innerText = 'perdiste '+userScore+ 'a' +computerScore;
+        resultado.appendChild(h2);
+    }
 }
 
-function round (userChoice, computerChoice) {
-    let roundWinner = '';
-    if (userChoice == computerChoice) {
-        roundWinner = 'empate';
-    }
-    if (
-        (userChoice == 'PIEDRA' && computerChoice == 'TIJERA') ||
-        (userChoice == 'TIJERA' && computerChoice == 'PAPEL') ||
-        (userChoice == 'PAPEL' && computerChoice == 'PIEDRA')
-    ) {
-        roundWinner = 'usuario';
-    }
 
-    if (
-        (computerChoice == 'PIEDRA' && userChoice == 'TIJERA') ||
-        (computerChoice == 'TIJERA' && userChoice == 'PAPEL') ||
-        (computerChoice == 'PAPEL' && userChoice == 'PIEDRA')
-    ) {
-        roundWinner = 'computadora';
-    }
-    return roundWinner;
-}
-
-// game
-
-function game(){
-    let ronda = 0;
-    let usuario = '';
-    let computadora = '';
-    let ganador = '';
-    let scoreUsuario = 0;
-    let scoreComputadora = 0;
-
-    while (ronda <= 5) {
-        usuario = userChoice();
-        computadora = getComputerChoice();
-        ganador = round(usuario, computadora);
-
-        if(ganador == 'usuario'){
-            scoreUsuario += 1;
-            ronda += 1;
-            console.log("gana el usuario");
+const round = (userChoice, computerChoice) => {
+    
+        if (userChoice == computerChoice) {
+            const p = document.createElement('p');
+            p.innerText = "empate";
+            resultado.appendChild(p);
         }
-        else if (ganador == 'computadora'){
-            scoreComputadora +=1;
-            ronda +=1;
-            console.log("gana la computadora");
+        if (
+            (userChoice == 'PIEDRA' && computerChoice == 'TIJERA') ||
+            (userChoice == 'TIJERA' && computerChoice == 'PAPEL') ||
+            (userChoice == 'PAPEL' && computerChoice == 'PIEDRA')
+        ) {
+            const p = document.createElement('p');
+            p.innerText = "ganaste!";
+            resultado.appendChild(p);
+            userScore+=1;
         }
-        else {
-            console.log("empate");
+
+        if (
+            (computerChoice == 'PIEDRA' && userChoice == 'TIJERA') ||
+            (computerChoice == 'TIJERA' && userChoice == 'PAPEL') ||
+            (computerChoice == 'PAPEL' && userChoice == 'PIEDRA')
+        ) {
+            const p = document.createElement('p');
+            p.innerText = "perdiste";
+            resultado.appendChild(p);
+            computerScore+=1;
         }
-    }
-
-    if (scoreUsuario > scoreComputadora) {
-        console.log("ganaste");
-    }
-    else {
-        console.log("perdiste");
-    }
-
+        console.log(userScore, computerScore);
+    
 }
 
-game();
+
+piedraBtn.addEventListener('click', () => {
+    const computerChoice = getComputerChoice();
+    const userChoice = 'PIEDRA';
+    round(userChoice, computerChoice);
+    checkWinner(userScore, computerScore);
+})
+
+papelBtn.addEventListener('click', () => {
+const computerChoice = getComputerChoice();
+const userChoice = 'PAPEL';
+round(userChoice, computerChoice);
+checkWinner(userScore, computerScore);
+})
+
+tijeraBtn.addEventListener('click', () => {
+const computerChoice = getComputerChoice();
+const userChoice = 'TIJERA';
+round(userChoice, computerChoice);
+checkWinner(userScore, computerScore);
+})
+
+
+
+
+
